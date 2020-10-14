@@ -8,6 +8,13 @@ namespace OX_Logic
 {
     class Board : IBoard
     {
+        char[] fields;
+
+        public Board()
+        {
+
+        }
+
         public Task<bool> AddPlayer(IPlayer player)
         {
             throw new NotImplementedException();
