@@ -8,26 +8,52 @@ namespace OX_Logic
 {
     class Board : IBoard
     {
-        char[] fields;
+        PlayersMarks[,] fields;
+        PlayersMarks lastMove;
 
         public Board()
         {
+            this.fields = new PlayersMarks[3, 3];
+        }
+        public Task<PlayersMarks> GetWinner()
+        {
+            bool result =
+                   this.fields[0, 0] == this.fields[0, 1] && this.fields[0, 1] == this.fields[0, 2] && this.fields[0, 0] != PlayersMarks.none // columns
+                || this.fields[1, 0] == this.fields[1, 1] && this.fields[1, 1] == this.fields[1, 2] && this.fields[1, 0] != PlayersMarks.none
+                || this.fields[2, 0] == this.fields[2, 1] && this.fields[2, 1] == this.fields[2, 2] && this.fields[2, 0] != PlayersMarks.none
+
+                || this.fields[0, 0] == this.fields[1, 0] && this.fields[1, 0] == this.fields[2, 0] && this.fields[0, 0] != PlayersMarks.none// rows
+                || this.fields[0, 1] == this.fields[1, 1] && this.fields[1, 1] == this.fields[2, 1] && this.fields[0, 1] != PlayersMarks.none
+                || this.fields[0, 2] == this.fields[1, 2] && this.fields[1, 2] == this.fields[2, 2] && this.fields[0, 2] != PlayersMarks.none
+
+                || this.fields[0, 0] == this.fields[1, 1] && this.fields[1, 1] == this.fields[2, 2] && this.fields[0, 0] != PlayersMarks.none // diagonal
+                || this.fields[0, 2] == this.fields[1, 1] && this.fields[1, 1] == this.fields[2, 0] && this.fields[0, 2] != PlayersMarks.none;
+
+            if (result)
+                return Task.FromResult(this.lastMove);
+            else
+                return Task.FromResult(PlayersMarks.none);
+        }
+        public Task<bool> PutMark(PlayersMarks player, Point where)
+        {
+            if (this.fields[where.X, where.Y] != PlayersMarks.none)
+                Task.FromResult(false);
+
+
+            this.lastMove = player;
+            this.fields[where.X, where.Y] = player;
+            return Task.FromResult(true);
 
         }
-
-        public Task<bool> AddPlayer(IPlayer player)
+        public Task Erase(Point where)
         {
-            throw new NotImplementedException();
+            this.fields[where.X, where.Y] = PlayersMarks.none;
+            return Task.CompletedTask;
         }
-
-        public Task<char> GetBoard()
+        public Task ResetAll()
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> PutMark(char player, Point where)
-        {
-            throw new NotImplementedException();
+            Array.Clear(fields, 0, fields.Length);
+            return  Task.CompletedTask;
         }
     }
 }

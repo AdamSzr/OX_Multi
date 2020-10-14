@@ -8,9 +8,9 @@ namespace OX_Logic
 {
     interface IBoard
     {
-        public Task<bool> PutMark(char player, Point where);
-        public Task<bool> AddPlayer(IPlayer player);
-        public Task<char> GetBoard();
-        
+        public Task<bool> PutMark(PlayersMarks player, Point where);
+        public Task Erase(Point where);
+        public Task<PlayersMarks> GetWinner();
+        public Task ResetAll();
     }
 }

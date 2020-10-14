@@ -1,5 +1,8 @@
 .vs
 GameServer/obj
+GameServer/bin/
 OX_Logic/obj
+OX_Logic/bin
 OX_WebClient/obj
 WpfClient/obj
+WpfClient/bin
